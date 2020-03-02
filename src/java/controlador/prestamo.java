@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.Prestamo;
 
 /**
  *
@@ -38,7 +39,7 @@ public class prestamo extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet prestamo</title>");            
+            out.println("<title>Servlet prestamo</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet prestamo at " + request.getContextPath() + "</h1>");
@@ -59,9 +60,9 @@ public class prestamo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            ArrayList<String> meses = Utilidades.getMeses();
-            request.setAttribute("meses", meses);
-            request.getRequestDispatcher("prestamo.jsp").forward(request, response);
+        ArrayList<String> meses = Utilidades.getMeses();
+        request.setAttribute("meses", meses);
+        request.getRequestDispatcher("prestamo.jsp").forward(request, response);
     }
 
     /**
@@ -75,7 +76,34 @@ public class prestamo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String nombre;
+        double dCantidad;
+        double dInteres;
+        int iTiempo;
+
+        nombre = request.getParameter("nombre");
+
+        if (request.getParameter("cantidad") != null) {
+            dCantidad = Double.parseDouble(request.getParameter("cantidad"));
+        } else {
+            dCantidad = 0;
+        }
+
+        if (request.getParameter("interes") != null) {
+            dInteres = Double.parseDouble(request.getParameter("interes"));
+        } else {
+            dInteres = 0;
+        }
+
+        iTiempo = Integer.parseInt(request.getParameter("tiempo"));
+
+        Prestamo prestamo = new Prestamo(dCantidad, dInteres, iTiempo);
+        ArrayList<String> meses = Utilidades.getMeses();
+        request.setAttribute("meses", meses);
+        request.setAttribute("nombre", nombre);
+        request.setAttribute("prestamo", prestamo);
+
+        request.getRequestDispatcher("prestamo.jsp").forward(request, response);
     }
 
     /**
