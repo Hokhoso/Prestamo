@@ -4,6 +4,7 @@
     Author     : USUARIO1
 --%>
 
+<%@page import="modelo.Cuota"%>
 <%@page import="modelo.Prestamo"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -24,13 +25,14 @@
             if(prestamo == null){
                 prestamo = new Prestamo(0,0,12);
             }
+            ArrayList<Cuota> cuotas = (ArrayList<Cuota>)request.getAttribute("cuotas");
         %>
         <h1>Solicitud de préstamos</h1>
         <form action="prestamo" method="post">
             <p>Nombre:<input type="text" name="nombre" value="<%=nombre%>"></p>
             <p>Cuantia:<input type="text" name="cantidad" value="<%=prestamo.getCantidad()%>"></p>
             <p>Interés:<input type="text" name="interes" value="<%=prestamo.getInteres()%>"</p>
-            Meses:<select name="tiempo" id="tiempo">
+            Meses:<select name="tiempo">
                 <% 
                     for (int i=0; i<meses.size(); i++) {
                         String selected="";
@@ -48,5 +50,28 @@
             if ( prestamo!=null ){ %>
                 <h1>Importe total: <%=prestamo.getImporte()%></h1>
         <%}%>
+        
+        <table border="1">
+           <%
+              if (cuotas!=null){ 
+           %>
+            <tr>
+                <th>NºCuota</th>
+                <th>Importe</th>
+                <th>Capital</th>
+                <th>Interés</th>
+            </tr>
+            <%
+                for (int i=0; i<cuotas.size(); i++){
+                    Cuota cuota = cuotas.get(i);  
+            %>
+            <tr>
+                <td><%=cuotas.get(i).getNum_cuota()%></td>
+                <td><%=String.format("%.2f",cuotas.get(i).getTotal())%></td>
+                <td><%=String.format("%.2f",cuotas.get(i).getCapital())%></td>
+                <td><%=String.format("%.2f",cuotas.get(i).getInteres())%></td>
+              <% }
+           }%>
+        </table>
         
 </html>

@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.Cuota;
 import modelo.Prestamo;
 
 /**
@@ -102,6 +103,9 @@ public class prestamo extends HttpServlet {
         request.setAttribute("meses", meses);
         request.setAttribute("nombre", nombre);
         request.setAttribute("prestamo", prestamo);
+        
+        ArrayList<Cuota> cuotas = Utilidades.generaListaCuotas(iTiempo, prestamo.getImporte());
+        request.setAttribute("cuotas", cuotas);
 
         request.getRequestDispatcher("prestamo.jsp").forward(request, response);
     }

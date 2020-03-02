@@ -6,6 +6,7 @@
 package controlador;
 
 import java.util.ArrayList;
+import modelo.Cuota;
 
 /**
  *
@@ -20,5 +21,19 @@ public class Utilidades {
             pointer = pointer + 12;
         }
         return meses;
+    }
+    
+    public static ArrayList<Cuota> generaListaCuotas ( int meses, double total) {
+        ArrayList<Cuota> cuotas = new ArrayList<Cuota>();
+        for ( int i=1; i<=meses; i++) {
+            Cuota cuota = new Cuota(
+                    i,//numero de cuota
+                    total/meses,//total de la cuota
+                    total/meses - (total/meses - (total/meses * ( i - 1) / meses)),//capital
+                    total/meses - (total/meses * ( i - 1) / meses)//interes
+            );
+            cuotas.add(cuota);
+        }
+        return cuotas;
     }
 }
